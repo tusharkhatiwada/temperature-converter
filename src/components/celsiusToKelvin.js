@@ -1,9 +1,22 @@
 import React, { Component } from "react";
+import Modal from "react-modal";
 
-export default class App extends Component {
+const customStyles = {
+    content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)"
+    }
+};
+
+export default class CelsiusToKelvin extends Component {
     state = {
         celsius: 0,
-        kelvin: 0
+        kelvin: 0,
+        modalIsOpen: false
     };
     componentDidMount() {
         const kelvin = parseFloat(this.state.celsius) + 273.15;
@@ -21,9 +34,17 @@ export default class App extends Component {
     };
     convert = e => {
         e.preventDefault();
-        const kelvin = parseFloat(this.state.celsius) + 273.15;
+        // const kelvin = parseFloat(this.state.celsius) + 273.15;
+        // this.setState({
+        //     kelvin
+        // });
         this.setState({
-            kelvin
+            modalIsOpen: true
+        });
+    };
+    closeModal = () => {
+        this.setState({
+            modalIsOpen: false
         });
     };
     render() {
@@ -45,6 +66,14 @@ export default class App extends Component {
                     </div>
                 </form>
                 <h1>{`Kelvin value is: ${this.state.kelvin}`}</h1>
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                >
+                    <h2>{`${this.state.celsius} celsius = ${this.state.kelvin} kelvin`}</h2>
+                </Modal>
             </div>
         );
     }
